@@ -7,13 +7,14 @@
   <title>Pato Blanco · !Donde todos nadan igual, El pato no sigue la corriente!</title>
   <meta name="description"
     content="Camisetas, hoodies, chaquetas, gorras, pocillos y termos personalizados con tu idea. Diseña en línea y envíanos tu propuesta.">
-  <link rel="icon" href="assets/logo-pato.png">
+  <link rel="icon" href="/assets/logo-pato.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&family=Permanent+Marker&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/CSS/styles.css">
+  <script src="/js/app.js" defer></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@
   <header class="cabecera">
     <div class="envoltura cabecera__fila">
       <a class="marca" href="#inicio">
-        <img src="assets/logo-pato.png" alt="">
+        <img src="/assets/logo-pato.png" alt="">
         <span>Pato Blanco<small>Ropa, Tazas, Accesorios, Personalizados, Estampamos Estilo</small></span>
       </a>
       <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menú</button>
@@ -29,10 +30,11 @@
         <a href="#catalogo">Catálogo</a>
         <a href="#proceso">Cómo funciona</a>
         <a href="#contacto">Contacto</a>
-        <a class="btn btn--sm" href="Custom.html">Diseñar ahora</a>
+        <a class="btn btn--sm" href="/src/WorkShop.html">Diseñar ahora</a>
       </nav>
     </div>
   </header>
+
   <main>
     <section class="heroe" id="inicio">
       <div class="envoltura heroe__grid">
@@ -41,7 +43,7 @@
           <p class="plomo">Camisetas, hoodies, chaquetas, gorras, pocillos y termos estampados con lo que tengas en la
             cabeza. Armas el diseño aquí mismo, nos lo mandas y lo producimos.</p>
           <div class="heroe__acciones">
-            <a class="btn" href="#taller">Diseñar mi prenda</a>
+            <a class="btn" href="/src/WorkShop.html">Diseñar mi prenda</a>
             <a class="btn btn--claro" href="#catalogo">Ver catálogo</a>
           </div>
           <div class="datos-fila">
@@ -52,7 +54,7 @@
         </div>
         <div class="heroe__sticker">
           <span class="chapa">Hecho en Bogotá</span>
-          <img src="assets/logo-pato.png" alt="Logo de Pato Blanco: un pato corriendo con tenis naranjas">
+          <img src="/assets/logo-pato.png" alt="Logo de Pato Blanco: un pato corriendo con tenis naranjas">
         </div>
       </div>
       <div class="cinta" aria-hidden="true">
@@ -72,34 +74,13 @@
         <div class="rejilla" id="rejillaCatalogo"></div>
       </div>
     </section>
-
-    <section class="seccion" id="proceso">
-      <div class="envoltura">
-        <div class="seccion__cabeza">
-          <h2>Cómo funciona</h2>
-        </div>
-        <div class="ruta">
-          <div class="ruta__item"><b>1 · Diseñas</b>
-            <p>Escoges la prenda, el color y montas tu arte en el visor. Lo que ves es la referencia que usamos en el
-              taller.</p>
-          </div>
-          <div class="ruta__item"><b>2 · Cotizamos</b>
-            <p>Recibimos tu propuesta con todos los detalles y te escribimos con el precio, la técnica y la fecha de
-              entrega.</p>
-          </div>
-          <div class="ruta__item"><b>3 · Producimos</b>
-            <p>Aprobado el arte, estampamos y despachamos. Entre 3 y 5 días hábiles según la cantidad.</p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="pie" id="contacto">
     <div class="envoltura">
       <div class="pie__grid">
         <div>
-          <div class="marca" style="margin-bottom:.8rem"><img src="assets/logo-pato.png" alt=""><span>Pato
+          <div class="marca" style="margin-bottom:.8rem"><img src="/assets/logo-pato.png" alt=""><span>Pato
               Blanco<small>Personalización</small></span></div>
           <p style="max-width:34ch;color:#cfd8d9">Estampamos prendas y regalos con las ideas de nuestros clientes. Sin
             pedidos mínimos.</p>
@@ -119,7 +100,7 @@
       </div>
       <div class="pie__base">
         <span>© <span id="anio"></span> Pato Blanco · Bogotá, Colombia</span>
-        <span>Diseñado y desarrollado por Juan David Navarrete</span>
+        <span>Diseñado y desarrollado por Juan Navarrete</span>
       </div>
     </div>
   </footer>
@@ -251,10 +232,7 @@
       </section>
     </div>
   </div>
-
   <div id="hostModal"></div>
-
-  <script src="app.js"></script>
 </body>
 
 </html>

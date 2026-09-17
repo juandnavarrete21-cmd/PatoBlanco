@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> TALLER DE EDICION | PATO BLANCO </title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pato Blanco · !Donde todos nadan igual, El pato no sigue la corriente!</title>
+    <meta name="description"
+    content="Camisetas, hoodies, chaquetas, gorras, pocillos y termos personalizados con tu idea. Diseña en línea y envíanos tu propuesta.">    
+    <link rel="icon" href="assets/logo-pato.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/styles.css">
+</head>
 
+<body>
+<section class="seccion" id="proceso">
+      <div class="envoltura">
+        <div class="seccion__cabeza">
+          <h2>Cómo funciona</h2>
+        </div>
+        <div class="ruta">
+          <div class="ruta__item"><b>1 · Diseñas</b>
+            <p>Escoges la prenda, el color y montas tu arte en el visor. Lo que ves es la referencia que usamos en el
+              taller.</p>
+          </div>
+          <div class="ruta__item"><b>2 · Cotizamos</b>
+            <p>Recibimos tu propuesta con todos los detalles y te escribimos con el precio, la técnica y la fecha de
+              entrega.</p>
+          </div>
+          <div class="ruta__item"><b>3 · Producimos</b>
+            <p>Aprobado el arte, estampamos y despachamos. Entre 3 y 5 días hábiles según la cantidad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="seccion seccion--crema" id="taller">
         <div class="envoltura">
             <div class="seccion__cabeza">
@@ -90,8 +119,8 @@
                         </div>
 
                         <div class="dos" style="margin-top:.4rem">
-                            <label class="campo"><span>Tamaño del arte</span><input type="range" id="escalaArte"
-                                    min="30" max="100" value="72"></label>
+                            <label class="campo"><span>Tamaño del arte</span><input type="range" id="escalaArte" min="30"
+                                    max="100" value="72"></label>
                             <label class="campo"><span>Posición vertical</span><input type="range" id="posArte" min="0"
                                     max="100" value="50"></label>
                         </div>
@@ -102,10 +131,10 @@
                             <h3>Tus datos</h3>
                         </div>
                         <div class="dos">
-                            <label class="campo"><span>Nombre</span><input type="text" id="fNombre"
-                                    placeholder="Juan David" required></label>
-                            <label class="campo"><span>WhatsApp</span><input type="tel" id="fTel"
-                                    placeholder="300 000 0000" required></label>
+                            <label class="campo"><span>Nombre</span><input type="text" id="fNombre" placeholder="Juan David"
+                                    required></label>
+                            <label class="campo"><span>WhatsApp</span><input type="tel" id="fTel" placeholder="300 000 0000"
+                                    required></label>
                         </div>
                         <div class="dos">
                             <label class="campo"><span>Correo</span><input type="email" id="fCorreo"
@@ -115,8 +144,7 @@
                         </div>
                         <label class="campo"><span>Notas para el taller</span><textarea id="fNotas"
                                 placeholder="Ubicación exacta del estampado, colores de referencia, fecha en que lo necesitas…"></textarea></label>
-                        <button class="btn" id="btnEnviar" type="button"
-                            style="width:100%;justify-content:center">Enviar mi
+                        <button class="btn" id="btnEnviar" type="button" style="width:100%;justify-content:center">Enviar mi
                             diseño</button>
                         <p class="aviso" style="margin-top:.7rem">Te confirmamos precio final y tiempos por WhatsApp. No
                             se cobra
@@ -126,12 +154,6 @@
             </div>
         </div>
     </section>
-
-
-</head>
-
-<body>
-
 </body>
 
 </html>
