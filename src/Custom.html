@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> TALLER DE EDICION | PATO BLANCO </title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <section class="seccion seccion--crema" id="taller">
+        <div class="envoltura">
+            <div class="seccion__cabeza">
+                <div>
+                    <h2>Arma tu diseño</h2>
+                    <p class="plomo">Lo que veas aquí es lo que nos llega. Sube tu arte o escribe el texto y cuéntanos
+                        el resto.
+                    </p>
+                </div>
+            </div>
+            <div class="taller">
+                <div class="lienzo">
+                    <div class="lienzo__marco" id="marco">
+                        <div id="siluetaHost" style="width:100%;height:100%"></div>
+                        <div class="zona zona--guia" id="zonaArte"></div>
+                    </div>
+                    <div class="lienzo__barra">
+                        <div class="conmutador" id="conmutadorVista" role="group" aria-label="Cara del producto">
+                            <button type="button" data-vista="frente" aria-pressed="true">Frente</button>
+                            <button type="button" data-vista="espalda" aria-pressed="false">Espalda</button>
+                        </div>
+                        <strong id="resumenLienzo">Camiseta · Blanco · Talla M</strong>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="paso">
+                        <div class="paso__titulo"><span class="paso__num">1</span>
+                            <h3>Producto</h3>
+                        </div>
+                        <div class="opciones" id="opcionesProducto"></div>
+                    </div>
+
+                    <div class="paso">
+                        <div class="paso__titulo"><span class="paso__num">2</span>
+                            <h3>Color y talla</h3>
+                        </div>
+                        <div class="campo"><span>Color de la base</span>
+                            <div class="muestras" id="muestrasColor"></div>
+                        </div>
+                        <div class="campo" id="campoTalla"><span>Talla</span>
+                            <div class="opciones" id="opcionesTalla"></div>
+                        </div>
+                    </div>
+
+                    <div class="paso">
+                        <div class="paso__titulo"><span class="paso__num">3</span>
+                            <h3>Tu arte</h3>
+                        </div>
+                        <div class="conmutador" id="conmutadorArte" role="group" aria-label="Tipo de arte"
+                            style="margin-bottom:.9rem">
+                            <button type="button" data-modo="imagen" aria-pressed="true">Subir imagen</button>
+                            <button type="button" data-modo="texto" aria-pressed="false">Escribir texto</button>
+                        </div>
+
+                        <div id="bloqueImagen">
+                            <div class="soltar" id="soltar" tabindex="0" role="button">
+                                <strong>Suelta tu archivo o haz clic</strong>
+                                <small>PNG, JPG o SVG · lo ideal es PNG con fondo transparente</small>
+                            </div>
+                            <input type="file" id="archivoArte" accept="image/*" class="oculto">
+                            <p class="aviso" id="nombreArchivo" style="margin:.6rem 0 0"></p>
+                        </div>
+
+                        <div id="bloqueTexto" class="oculto">
+                            <label class="campo"><span>Texto a estampar</span><input type="text" id="textoArte"
+                                    maxlength="40" placeholder="PATO BLANCO"></label>
+                            <div class="dos">
+                                <label class="campo"><span>Tipografía</span>
+                                    <select id="fuenteArte">
+                                        <option value="'Permanent Marker',cursive">Marcador</option>
+                                        <option value="'Archivo Black',sans-serif">Bloque</option>
+                                        <option value="'Bebas Neue',sans-serif">Condensada</option>
+                                        <option value="'Barlow',sans-serif">Simple</option>
+                                    </select>
+                                </label>
+                                <label class="campo"><span>Color del texto</span><input type="color" id="colorTexto"
+                                        value="#FE690B"
+                                        style="width:100%;height:44px;border:2px solid var(--tinta);border-radius:12px;background:none;padding:2px"></label>
+                            </div>
+                        </div>
+
+                        <div class="dos" style="margin-top:.4rem">
+                            <label class="campo"><span>Tamaño del arte</span><input type="range" id="escalaArte"
+                                    min="30" max="100" value="72"></label>
+                            <label class="campo"><span>Posición vertical</span><input type="range" id="posArte" min="0"
+                                    max="100" value="50"></label>
+                        </div>
+                    </div>
+
+                    <div class="paso">
+                        <div class="paso__titulo"><span class="paso__num">4</span>
+                            <h3>Tus datos</h3>
+                        </div>
+                        <div class="dos">
+                            <label class="campo"><span>Nombre</span><input type="text" id="fNombre"
+                                    placeholder="Juan David" required></label>
+                            <label class="campo"><span>WhatsApp</span><input type="tel" id="fTel"
+                                    placeholder="300 000 0000" required></label>
+                        </div>
+                        <div class="dos">
+                            <label class="campo"><span>Correo</span><input type="email" id="fCorreo"
+                                    placeholder="tucorreo@ejemplo.com"></label>
+                            <label class="campo"><span>Cantidad</span><input type="number" id="fCantidad" min="1"
+                                    value="1"></label>
+                        </div>
+                        <label class="campo"><span>Notas para el taller</span><textarea id="fNotas"
+                                placeholder="Ubicación exacta del estampado, colores de referencia, fecha en que lo necesitas…"></textarea></label>
+                        <button class="btn" id="btnEnviar" type="button"
+                            style="width:100%;justify-content:center">Enviar mi
+                            diseño</button>
+                        <p class="aviso" style="margin-top:.7rem">Te confirmamos precio final y tiempos por WhatsApp. No
+                            se cobra
+                            nada en este paso.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</head>
+
+<body>
+
+</body>
+
+</html>
