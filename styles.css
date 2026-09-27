@@ -999,3 +999,306 @@ th {
     grid-template-columns: 88px 1fr 40px
   }
 }
+
+/* =========================================================================
+   INTRO DE ENTRADA · el pato corre, salta y aterriza junto al nombre
+   Necesita: assets/iconografia/pato-sprite.png
+   El marcado lo arma app.js, aquí solo va la presentación.
+   ========================================================================= */
+
+.pbi {
+  --pb-fs: clamp(2.1rem, 9cqw, 5.4rem);
+  --pb-alto: calc(var(--pb-fs) * 1.95);
+  --pb-t-correr: 1250ms;
+  --pb-t-salto: 540ms;
+  --pb-t-caida: 280ms;
+  --pb-t-salida: 520ms;
+
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  container-type: size;
+  overflow: hidden;
+  background: var(--crema);
+  transition: opacity var(--pb-t-salida) ease;
+}
+
+.pbi--fin {
+  opacity: 0;
+  pointer-events: none
+}
+
+.pbi__escena {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: flex-end;
+  gap: .35em;
+}
+
+.pbi__marca {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--display);
+  font-size: var(--pb-fs);
+  line-height: .86;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--tinta);
+  transform: translateX(-92cqw);
+}
+
+.pbi__marca span:last-child {
+  color: var(--fuego)
+}
+
+.pbi__lema {
+  position: absolute;
+  top: calc(100% + .9em);
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--texto);
+  font-size: clamp(.72rem, 2.1cqw, 1rem);
+  font-weight: 600;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--tinta-80);
+  opacity: 0;
+}
+
+.pbi__pato {
+  flex: none;
+  width: calc(var(--pb-alto) * .85);
+  height: var(--pb-alto);
+  transform: translateX(-66cqw);
+  will-change: transform;
+}
+
+.pbi__salto {
+  height: 100%;
+  will-change: transform
+}
+
+.pbi__sprite {
+  width: 100%;
+  height: 100%;
+  background-image: url("assets/iconografia/pato-sprite.png");
+  background-repeat: no-repeat;
+  background-size: 600% 100%;
+  /* 6 poses: 0% la 1.ª, 100% la 6.ª */
+  background-position: 0% 0;
+  transform-origin: 50% 100%;
+}
+
+/* --- 1. carrera --- */
+.pbi--corre .pbi__sprite {
+  animation: pb-ciclo calc(var(--pb-t-correr) / 2.6) steps(5) infinite
+}
+
+.pbi--corre .pbi__pato {
+  animation: pb-avanza var(--pb-t-correr) cubic-bezier(.22, .62, .36, 1) forwards
+}
+
+.pbi--corre .pbi__marca {
+  animation: pb-arrastra var(--pb-t-correr) cubic-bezier(.22, .62, .36, 1) forwards
+}
+
+@keyframes pb-ciclo {
+  from {
+    background-position-x: 0%
+  }
+
+  to {
+    background-position-x: 100%
+  }
+}
+
+@keyframes pb-avanza {
+  from {
+    transform: translateX(-66cqw)
+  }
+
+  to {
+    transform: translateX(0)
+  }
+}
+
+@keyframes pb-arrastra {
+  from {
+    transform: translateX(-92cqw)
+  }
+
+  to {
+    transform: translateX(0)
+  }
+}
+
+/* --- 2. salto --- */
+.pbi--salta .pbi__pato,
+.pbi--salta .pbi__marca {
+  transform: translateX(0)
+}
+
+.pbi--salta .pbi__sprite {
+  background-position-x: 40%
+}
+
+/* pose aérea */
+.pbi--salta .pbi__salto {
+  animation: pb-salta var(--pb-t-salto) cubic-bezier(.3, 0, .5, 1) forwards
+}
+
+@keyframes pb-salta {
+  0% {
+    transform: translateY(0) scaleY(.94) scaleX(1.05)
+  }
+
+  18% {
+    transform: translateY(-26%) scaleY(1.05) scaleX(.97)
+  }
+
+  55% {
+    transform: translateY(-62%) scaleY(1) scaleX(1)
+  }
+
+  100% {
+    transform: translateY(0) scaleY(1) scaleX(1)
+  }
+}
+
+/* --- 3. aterrizaje --- */
+.pbi--cae .pbi__pato {
+  transform: translateX(0)
+}
+
+.pbi--cae .pbi__marca {
+  animation: pb-rebota var(--pb-t-caida) ease-out
+}
+
+.pbi--cae .pbi__sprite {
+  background-position-x: 100%;
+  /* pose con el polvo */
+  animation: pb-golpe var(--pb-t-caida) ease-out;
+}
+
+@keyframes pb-golpe {
+  0% {
+    transform: scaleY(.82) scaleX(1.12)
+  }
+
+  60% {
+    transform: scaleY(1.03) scaleX(.98)
+  }
+
+  100% {
+    transform: scaleY(1) scaleX(1)
+  }
+}
+
+@keyframes pb-rebota {
+  0% {
+    transform: translate(0, 0)
+  }
+
+  35% {
+    transform: translate(0, 5%)
+  }
+
+  100% {
+    transform: translate(0, 0)
+  }
+}
+
+/* --- 4. en reposo --- */
+.pbi--listo .pbi__pato,
+.pbi--listo .pbi__marca {
+  transform: translateX(0)
+}
+
+.pbi--listo .pbi__sprite {
+  background-position-x: 100%
+}
+
+.pbi--listo .pbi__lema {
+  animation: pb-lema 420ms ease-out forwards
+}
+
+@keyframes pb-lema {
+  from {
+    opacity: 0;
+    letter-spacing: .12em
+  }
+
+  to {
+    opacity: 1;
+    letter-spacing: .34em
+  }
+}
+
+/* --- botón para saltarlo --- */
+.pbi__saltar {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  padding: .45rem 1.1rem;
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  background: var(--papel);
+  font-family: var(--display);
+  font-size: .8rem;
+  text-transform: uppercase;
+  color: var(--tinta);
+  cursor: pointer;
+  box-shadow: var(--dura-sm);
+  transition: transform .12s, box-shadow .12s, background .12s;
+}
+
+.pbi__saltar:hover {
+  background: var(--fuego);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--tinta);
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .pbi__marca,
+  .pbi__pato {
+    transform: translateX(0) !important
+  }
+
+  .pbi__sprite {
+    background-position-x: 100% !important
+  }
+
+  .pbi__lema {
+    opacity: 1
+  }
+
+  .pbi *,
+  .pbi {
+    animation: none !important
+  }
+}
+
+@media (max-width:560px) {
+  .pbi__escena {
+    flex-direction: column;
+    align-items: center;
+    gap: .1em
+  }
+
+  .pbi__marca {
+    align-items: center;
+    order: 2
+  }
+
+  .pbi__pato {
+    order: 1
+  }
+}

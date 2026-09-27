@@ -560,3 +560,93 @@ function exportarCSV() {
     a.href = url; a.download = `pedidos-pato-blanco-${new Date().toISOString().slice(0, 10)}.csv`;
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
+
+/* ---------------- INTRO DE ENTRADA ---------------- */
+
+const INTRO = {
+    sprite: 'assets/iconografia/pato-sprite.png',
+    unaVezPorSesion: true,      // ponlo en false para verlo en cada recarga
+    correr: 1250,               // duración de cada fase, en milisegundos
+    salto: 540,
+    caida: 280,
+    reposo: 620,
+    salida: 520
+};
+
+const esperar = ms => new Promise(listo => setTimeout(listo, ms));
+
+function introYaVisto() {
+    try { return sessionStorage.getItem('pb:intro') === '1'; } catch (e) { return false; }
+}
+function marcarIntroVisto() {
+    try { sessionStorage.setItem('pb:intro', '1'); } catch (e) { /* modo privado */ }
+}
+
+function precargarSprite(ruta) {
+    return new Promise(listo => {
+        const img = new Image();
+        img.onload = img.onerror = listo;
+        img.src = ruta;
+        if (img.complete) listo();
+        setTimeout(listo, 1200);            // si la red se demora, arrancamos igual
+    });
+}
+
+function montarIntro() {
+    const caja = document.createElement('div');
+    caja.className = 'pbi';
+    caja.setAttribute('role', 'presentation');
+    caja.innerHTML = `
+    <div class="pbi__escena">
+      <p class="pbi__marca"><span>Pato</span><span>Blanco</span></p>
+      <div class="pbi__pato"><div class="pbi__salto"><div class="pbi__sprite"></div></div></div>
+      <p class="pbi__lema">Personalización</p>
+    </div>
+    <button class="pbi__saltar" type="button">Saltar</button>`;
+    caja.style.setProperty('--pb-t-correr', INTRO.correr + 'ms');
+    caja.style.setProperty('--pb-t-salto', INTRO.salto + 'ms');
+    caja.style.setProperty('--pb-t-caida', INTRO.caida + 'ms');
+    caja.style.setProperty('--pb-t-salida', INTRO.salida + 'ms');
+    document.body.appendChild(caja);
+    return caja;
+}
+
+async function reproducirIntro() {
+    if (INTRO.unaVezPorSesion && introYaVisto()) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { marcarIntroVisto(); return; }
+    marcarIntroVisto();
+
+    const caja = montarIntro();
+    const scrollPrevio = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    let terminado = false;
+
+    const cerrar = async () => {
+        if (terminado) return;
+        terminado = true;
+        caja.removeEventListener('click', saltar);
+        document.removeEventListener('keydown', saltar);
+        caja.classList.add('pbi--fin');
+        await esperar(INTRO.salida);
+        caja.remove();
+        document.body.style.overflow = scrollPrevio;
+    };
+    const saltar = e => { if (e.type === 'keydown' && e.key !== 'Escape') return; cerrar(); };
+    caja.addEventListener('click', saltar);
+    document.addEventListener('keydown', saltar);
+
+    const fase = async (clase, ms) => {
+        if (terminado) return;
+        caja.className = 'pbi ' + clase;
+        await esperar(ms);
+    };
+
+    await precargarSprite(INTRO.sprite);
+    await fase('pbi--corre', INTRO.correr);
+    await fase('pbi--salta', INTRO.salto);
+    await fase('pbi--cae', INTRO.caida);
+    await fase('pbi--listo', INTRO.reposo);
+    await cerrar();
+}
+
+reproducirIntro();
