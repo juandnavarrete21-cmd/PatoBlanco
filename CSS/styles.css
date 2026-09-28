@@ -1000,6 +1000,80 @@ th {
   }
 }
 
+/* ---------- ENLACES QUE ABREN EN OTRA PESTAÑA ---------- */
+
+.btn--externo::after,
+.enlace-externo::after {
+  content: "↗";
+  font-size: .85em;
+  line-height: 1;
+  opacity: .75
+}
+
+.enlace-externo::after {
+  margin-left: .25em
+}
+
+/* ---------- LLAMADO AL TALLER (en el inicio) ---------- */
+
+.llamado {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 2.5rem;
+  align-items: center
+}
+
+.llamado__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem
+}
+
+.llamado__lista li {
+  border-left: 4px solid var(--fuego);
+  padding-left: .8rem;
+  font-size: .98rem;
+  color: var(--tinta-80)
+}
+
+.llamado__lista b {
+  color: var(--tinta)
+}
+
+/* ---------- PRECIO BASE EN EL TALLER ---------- */
+
+.lienzo__precio {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .6rem;
+  margin-top: .7rem;
+  padding-top: .7rem;
+  border-top: 2px solid rgba(0, 25, 33, .12)
+}
+
+.lienzo__precio span {
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tinta-80)
+}
+
+.lienzo__precio b {
+  font-family: var(--display);
+  font-size: 1.5rem
+}
+
+@media (max-width:900px) {
+  .llamado {
+    grid-template-columns: 1fr
+  }
+}
+
 /* =========================================================================
    INTRO DE ENTRADA · el pato corre, salta y aterriza junto al nombre
    Necesita: assets/iconografia/pato-sprite.png
@@ -1088,7 +1162,7 @@ th {
 .pbi__sprite {
   width: 100%;
   height: 100%;
-  background-image: url("assets/iconografia/pato-sprite.png");
+  background-image: url("../assets/iconografia/pato-sprite.png");
   background-repeat: no-repeat;
   background-size: 600% 100%;
   /* 6 poses: 0% la 1.ª, 100% la 6.ª */
