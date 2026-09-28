@@ -1,8 +1,3 @@
-/* =========================================================================
-   PATO BLANCO · página de inicio
-   Necesita datos.js cargado antes. El taller vive en taller.html / taller.js
-   ========================================================================= */
-
 /* ---------------- INICIAR ---------------- */
 
 (async function iniciar() {
@@ -37,10 +32,9 @@ function pintarFiltros() {
 
 function pintarCatalogo() {
     const lista = estado.productos.filter(p => estado.filtro === 'todo' || p.categoria === estado.filtro);
-    $('#rejillaCatalogo').innerHTML = lista.map(p => {
-        const color = (PALETAS[p.paleta] || PALETAS.ropa)[0][1];
-        return `<article class="ficha">
-      <div class="ficha__arte">${SILUETAS[p.silueta].dibujo(color, 'frente')}</div>
+    $('#rejillaCatalogo').innerHTML = lista.map(p => `
+    <article class="ficha">
+      ${p.fotos && p.fotos.length ? carruselHTML(p) : siluetaHTML(p)}
       <span class="etiqueta">${p.categoria}</span>
       <h3>${p.nombre}</h3>
       <p style="margin:0;font-size:.9rem;color:var(--tinta-80)">${p.desc || ''}</p>
@@ -48,8 +42,109 @@ function pintarCatalogo() {
         <span class="precio">${COP.format(p.precio)}</span>
         <a class="btn btn--sm btn--externo" href="${enlaceTaller(p.id)}" target="_blank" rel="noopener"
            aria-label="Diseñar ${p.nombre} en el taller (abre en una pestaña nueva)">Diseñar</a>
-      </div></article>`;
-    }).join('');
+      </div>
+    </article>`).join('');
+
+    arrancarCarruseles();
+}
+
+/* SVG TEMPORAL, PARA PRODUCTOS SIN FOTOS */
+
+function siluetaHTML(p) {
+    const color = (PALETAS[p.paleta] || PALETAS.ropa)[0][1];
+    return `<div class="ficha__arte">${SILUETAS[p.silueta].dibujo(color, 'frente')}</div>`;
+}
+
+/* CARRUSEL DE FOTOS. LINK A WhatsApp. */
+
+function carruselHTML(p) {
+    const fotos = p.fotos;
+    const diapositivas = fotos.map((f, i) => `
+    <a class="carrusel__foto" href="${enlaceWhatsApp(p.nombre, f.codigo)}"
+       target="_blank" rel="noopener"
+       aria-label="Escribir por WhatsApp sobre este diseño (${i + 1} de ${fotos.length})">
+      <img alt="${p.nombre} personalizado, diseño ${i + 1} de ${fotos.length}"
+           ${i === 0 ? `src="${f.src}"` : ''} data-src="${f.src}" loading="lazy" decoding="async">
+    </a>`).join('');
+
+    const puntos = fotos.map((f, i) =>
+        `<button type="button" class="carrusel__punto" data-ir="${i}"
+                 aria-label="Ver diseño ${i + 1}"${i === 0 ? ' aria-current="true"' : ''}></button>`).join('');
+
+    return `
+    <div class="ficha__arte ficha__arte--fotos">
+      <div class="carrusel" data-carrusel role="group" aria-roledescription="carrusel"
+           aria-label="Diseños de ${p.nombre}">
+        <div class="carrusel__pista">${diapositivas}</div>
+        ${fotos.length > 1 ? `
+        <button type="button" class="carrusel__flecha carrusel__flecha--atras" aria-label="Diseño anterior">‹</button>
+        <button type="button" class="carrusel__flecha carrusel__flecha--siguiente" aria-label="Diseño siguiente">›</button>
+        <div class="carrusel__puntos">${puntos}</div>` : ''}
+      </div>
+    </div>`;
+}
+
+/* ---------------- MOTOR DEL CARRUSEL ---------------- */
+
+const CARRUSEL_PAUSA = 3800;      // DURACION DE FOTOS
+
+function arrancarCarruseles() {
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    $$('[data-carrusel]').forEach(caja => {
+        const pista = $('.carrusel__pista', caja);
+        const fotos = $$('.carrusel__foto', caja);
+        const puntos = $$('.carrusel__punto', caja);
+        if (fotos.length < 2) return;
+
+        let actual = 0, reloj = null;
+
+        /* CARGA LA FOTO ACTUAL Y SUS VECINAS */
+
+        const precargarVecinas = () => {
+            [actual - 1, actual, actual + 1].forEach(i => {
+                const f = fotos[(i + fotos.length) % fotos.length];
+                const img = f.querySelector('img');
+                if (img && !img.getAttribute('src')) img.src = img.dataset.src;
+            });
+        };
+
+        const ir = i => {
+            actual = (i + fotos.length) % fotos.length;
+            pista.style.transform = `translateX(-${actual * 100}%)`;
+            puntos.forEach((b, k) => b.toggleAttribute('aria-current', k === actual));
+            precargarVecinas();
+        };
+
+        const andar = () => { if (!quieto) reloj = setInterval(() => ir(actual + 1), CARRUSEL_PAUSA); };
+        const parar = () => { clearInterval(reloj); reloj = null; };
+        const reiniciar = () => { parar(); andar(); };
+
+        $('.carrusel__flecha--atras', caja).addEventListener('click', () => { ir(actual - 1); reiniciar(); });
+        $('.carrusel__flecha--siguiente', caja).addEventListener('click', () => { ir(actual + 1); reiniciar(); });
+        puntos.forEach(b => b.addEventListener('click', () => { ir(+b.dataset.ir); reiniciar(); }));
+
+        /* SE DETIENE CUANDO EL USUARIO MIRA */
+
+        caja.addEventListener('mouseenter', parar);
+        caja.addEventListener('mouseleave', andar);
+        caja.addEventListener('focusin', parar);
+        caja.addEventListener('focusout', andar);
+
+        /* PARA SMARTPHONE */
+
+        let inicioX = null;
+        caja.addEventListener('touchstart', e => { inicioX = e.touches[0].clientX; parar(); }, { passive: true });
+        caja.addEventListener('touchend', e => {
+            if (inicioX === null) return;
+            const recorrido = e.changedTouches[0].clientX - inicioX;
+            if (Math.abs(recorrido) > 40) ir(actual + (recorrido < 0 ? 1 : -1));
+            inicioX = null; andar();
+        });
+
+        precargarVecinas();
+        andar();
+    });
 }
 
 /* ---------------- SISTEMA DE EVENTOS ---------------- */
@@ -205,8 +300,8 @@ function exportarCSV() {
 
 const INTRO = {
     sprite: 'assets/iconografia/pato-sprite.png',
-    unaVezPorSesion: true,      // ponlo en false para verlo en cada recarga
-    correr: 1250,               // duración de cada fase, en milisegundos
+    unaVezPorSesion: true,      // FALSE PARA DEJAER QUE SE VEA CADA VEZ QUE SE ABRE LA PÁGINA
+    correr: 1250,               // TIEMPO DE CARRERA ANTES DEL SALTO
     salto: 540,
     caida: 280,
     reposo: 620,
@@ -226,7 +321,7 @@ function precargarSprite(ruta) {
         img.onload = img.onerror = listo;
         img.src = ruta;
         if (img.complete) listo();
-        setTimeout(listo, 1200);            // si la red se demora, arrancamos igual
+        setTimeout(listo, 1200);            // FALLAS DE CONEXION
     });
 }
 

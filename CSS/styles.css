@@ -217,7 +217,7 @@ p {
   cursor: pointer
 }
 
-/* ---------- héroe ---------- */
+/* ---------- GRILLA DE HEROE ---------- */
 .heroe {
   background: var(--papel);
   padding: clamp(2.5rem, 6vw, 4.5rem) 0 0;
@@ -666,7 +666,7 @@ input[type=range] {
   display: none !important
 }
 
-/* ---------- pasos cómo funciona ---------- */
+/* ---------- INDICACIONES ---------- */
 .ruta {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1014,7 +1014,7 @@ th {
   margin-left: .25em
 }
 
-/* ---------- LLAMADO AL TALLER (en el inicio) ---------- */
+/* ---------- LLAMADO AL TALLER ---------- */
 
 .llamado {
   display: grid;
@@ -1074,11 +1074,7 @@ th {
   }
 }
 
-/* =========================================================================
-   INTRO DE ENTRADA · el pato corre, salta y aterriza junto al nombre
-   Necesita: assets/iconografia/pato-sprite.png
-   El marcado lo arma app.js, aquí solo va la presentación.
-   ========================================================================= */
+/* ---------- PRECIO TALLER ---------- */
 
 .pbi {
   --pb-fs: clamp(2.1rem, 9cqw, 5.4rem);
@@ -1170,7 +1166,8 @@ th {
   transform-origin: 50% 100%;
 }
 
-/* --- 1. carrera --- */
+/* --- CARRERA 1 --- */
+
 .pbi--corre .pbi__sprite {
   animation: pb-ciclo calc(var(--pb-t-correr) / 2.6) steps(5) infinite
 }
@@ -1213,7 +1210,8 @@ th {
   }
 }
 
-/* --- 2. salto --- */
+/* --- SALTO --- */
+
 .pbi--salta .pbi__pato,
 .pbi--salta .pbi__marca {
   transform: translateX(0)
@@ -1223,7 +1221,8 @@ th {
   background-position-x: 40%
 }
 
-/* pose aérea */
+/* ---------- POSE DEL SALTO ---------- */
+
 .pbi--salta .pbi__salto {
   animation: pb-salta var(--pb-t-salto) cubic-bezier(.3, 0, .5, 1) forwards
 }
@@ -1246,7 +1245,8 @@ th {
   }
 }
 
-/* --- 3. aterrizaje --- */
+/* ---------- CAIDA DEL SALTO ---------- */
+
 .pbi--cae .pbi__pato {
   transform: translateX(0)
 }
@@ -1257,7 +1257,9 @@ th {
 
 .pbi--cae .pbi__sprite {
   background-position-x: 100%;
-  /* pose con el polvo */
+
+  /* POLVO */
+  
   animation: pb-golpe var(--pb-t-caida) ease-out;
 }
 
@@ -1289,7 +1291,8 @@ th {
   }
 }
 
-/* --- 4. en reposo --- */
+/* ---------- FINAL ---------- */
+
 .pbi--listo .pbi__pato,
 .pbi--listo .pbi__marca {
   transform: translateX(0)
@@ -1315,7 +1318,8 @@ th {
   }
 }
 
-/* --- botón para saltarlo --- */
+/* --- SKIP --- */
+
 .pbi__saltar {
   position: absolute;
   right: 1.4rem;
@@ -1376,3 +1380,121 @@ th {
     order: 1
   }
 }
+
+/* ---------- CARRUSEL DE FOTOS ---------- */
+
+.ficha__arte--fotos {
+  padding: 0;
+  overflow: hidden
+}
+
+.carrusel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--crema)
+}
+
+.carrusel__pista {
+  display: flex;
+  height: 100%;
+  transition: transform .45s cubic-bezier(.4, 0, .2, 1)
+}
+
+.carrusel__foto {
+  flex: 0 0 100%;
+  height: 100%;
+  display: block
+}
+
+.carrusel__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block
+}
+
+/* --- FLECHAS --- */
+
+.carrusel__flecha {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--tinta);
+  border-radius: 50%;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--display);
+  font-size: 1.2rem;
+  line-height: 1;
+  padding-bottom: 3px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .18s, background .12s;
+}
+
+.carrusel__flecha--atras {
+  left: 8px
+}
+
+.carrusel__flecha--siguiente {
+  right: 8px
+}
+
+.carrusel:hover .carrusel__flecha,
+.carrusel:focus-within .carrusel__flecha {
+  opacity: 1
+}
+
+.carrusel__flecha:hover {
+  background: var(--fuego)
+}
+
+/* PARA CELULAR */
+
+@media (hover:none) {
+  .carrusel__flecha {
+    opacity: .9
+  }
+}
+
+/* --- PUNTOS --- */
+
+.carrusel__puntos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 10px;
+  flex-wrap: wrap
+}
+
+.carrusel__punto {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 1px solid var(--tinta);
+  border-radius: 50%;
+  background: var(--papel);
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+
+.carrusel__punto[aria-current] {
+  background: var(--fuego);
+  transform: scale(1.35)
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .carrusel__pista {
+    transition: none
+  }

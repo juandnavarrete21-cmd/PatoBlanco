@@ -1,7 +1,3 @@
-/* =========================================================================
-   PATO BLANCO · datos y piezas compartidas
-   Lo cargan index.html y taller.html. Va siempre ANTES de app.js / taller.js
-   ========================================================================= */
 
 const CONFIG = {
     whatsapp: '573242847709',
@@ -121,9 +117,41 @@ const PALETAS = {
 };
 const TALLAS_ROPA = ['S', 'M', 'L', 'XL', 'XXL'];
 
+/* ---------------- FOTOS DEL CATALOGO ------------------- */
+
+const FOTOS = {
+    carpeta: 'assets/catalogo/',
+    ext: '.jpg',                 
+    hoodies: [
+        'hoodies/hoodie-santafe-frente',
+        'hoodies/hoodie-santafe-espalda',
+        'hoodies/hoodie-stranger-things-frente',
+        'hoodies/hoodie-a-marte-frente',
+        'hoodies/hoodie-a-marte-espalda',
+        'hoodies/hoodie-alas-espalda',
+        'hoodies/hoodie-ktm-frente',
+        'hoodies/hoodie-yamaha-frente',
+        'hoodies/hoodie-yamaha-mt07-espalda',
+        'hoodies/hoodie-fox-neon-espalda',
+        'hoodies/hoodie-fox-monster-espalda',
+        'hoodies/hoodie-fox-racing-espalda',
+        'hoodies/hoodie-redbull-espalda'
+    ]
+};
+
+/* LISTA DE OBJETOS DE CATALOGO */
+
+function galeriaDe(lista, prefijo) {
+    if (!lista || !lista.length) return [];
+    return lista.map((archivo, i) => ({
+        src: FOTOS.carpeta + archivo + FOTOS.ext,
+        codigo: prefijo + String(i + 1).padStart(2, '0')
+    }));
+}
+
 const PRODUCTOS_BASE = [
     { id: 'p1', nombre: 'Camiseta clásica', silueta: 'camiseta', categoria: 'ropa', precio: 45000, desc: 'Algodón 180 g, corte unisex', paleta: 'ropa', tallas: TALLAS_ROPA },
-    { id: 'p2', nombre: 'Hoodie con capucha', silueta: 'hoodie', categoria: 'ropa', precio: 115000, desc: 'Perchado interior, bolsillo canguro', paleta: 'ropa', tallas: TALLAS_ROPA },
+    { id: 'p2', nombre: 'Hoodie con capucha', silueta: 'hoodie', categoria: 'ropa', precio: 115000, desc: 'Perchado interior, bolsillo canguro', paleta: 'ropa', tallas: TALLAS_ROPA, fotos: galeriaDe(FOTOS.hoodies, 'H') },
     { id: 'p3', nombre: 'Chaqueta bomber', silueta: 'chaqueta', categoria: 'ropa', precio: 139000, desc: 'Cierre metálico y puño elástico', paleta: 'ropa', tallas: TALLAS_ROPA },
     { id: 'p4', nombre: 'Gorra curva', silueta: 'gorra', categoria: 'accesorios', precio: 38000, desc: 'Seis paneles, broche ajustable', paleta: 'gorra', tallas: ['Única'] },
     { id: 'p5', nombre: 'Pocillo cerámico', silueta: 'pocillo', categoria: 'regalos', precio: 28000, desc: '11 oz, apto para microondas', paleta: 'regalos', tallas: ['Única'] },
@@ -146,7 +174,8 @@ const estado = {
 };
 const productoActual = () => estado.productos.find(p => p.id === estado.sel.productoId) || estado.productos[0];
 
-/* Carga los datos guardados. Lo llaman las dos páginas al arrancar. */
+/* CARGAR DATOS GUARDADOS */
+
 async function cargarDatos() {
     estado.productos = await DB.leer('pb:productos') || PRODUCTOS_BASE;
     estado.pedidos = await DB.leer('pb:pedidos') || [];
@@ -179,7 +208,8 @@ function conectarNav() {
     $$('#nav a').forEach(a => a.addEventListener('click', () => nav.classList.remove('abierto')));
 }
 
-/* Pie de página: año y enlace de WhatsApp. */
+/* PIE DE PAGINA Y ENLACE DE WhatsApp. */
+
 function conectarPie() {
     if ($('#anio')) $('#anio').textContent = new Date().getFullYear();
     if ($('#pieWhats')) $('#pieWhats').href = `https://wa.me/${CONFIG.whatsapp}`;
@@ -202,13 +232,22 @@ function brindis(msg) {
     temporizadorBrindis = setTimeout(() => b.remove(), 3800);
 }
 
-/* Dónde vive cada página. Si mueves un archivo, se cambia aquí y ya. */
+/* RUTAS DE LAS PÁGINAS Y UBICACIONES */
+
 const RUTAS = {
     inicio: 'index.html',
-    taller: 'src/WorkShop.html'      // relativo a index.html
+    taller: 'src/WorkShop.html'      // index.html
 };
 
-/* Enlace al taller, con el producto ya escogido: src/WorkShop.html?producto=p2 */
+/* ENLACE AL TALLER: src/WorkShop.html?producto=p2 */
+
 function enlaceTaller(idProducto) {
     return idProducto ? `${RUTAS.taller}?producto=${encodeURIComponent(idProducto)}` : RUTAS.taller;
+}
+
+/* ENLACE DE WHATSAPP CON EL PRODUCTO VISTO */
+
+function enlaceWhatsApp(nombreProducto, codigo) {
+    const texto = `Hola Pato Blanco, vi este diseño en el catálogo y me interesa.\nProducto: ${nombreProducto}\nReferencia: ${codigo}`;
+    return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(texto)}`;
 }

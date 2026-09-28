@@ -1,8 +1,3 @@
-/* =========================================================================
-   PATO BLANCO · taller
-   Necesita datos.js cargado antes. Vive en taller.html.
-   Acepta ?producto=p2 en la URL para abrir con un producto ya escogido.
-   ========================================================================= */
 
 /* ---------------- INICIAR ---------------- */
 
